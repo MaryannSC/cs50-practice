@@ -1,0 +1,134 @@
+***** from shows.db *****
+
+sqlite> .schema
+CREATE TABLE shows (
+                    id INTEGER,
+                    title TEXT NOT NULL,
+                    year NUMERIC,
+                    episodes INT,
+                    PRIMARY KEY(id)
+                );
+CREATE TABLE genres (
+                    show_id INTEGER NOT NULL,
+                    genre TEXT NOT NULL,
+                    FOREIGN KEY(show_id) REFERENCES shows(id)
+                );
+CREATE TABLE stars (
+                show_id INTEGER NOT NULL,
+                person_id INTEGER NOT NULL,
+                FOREIGN KEY(show_id) REFERENCES shows(id),
+                FOREIGN KEY(person_id) REFERENCES people(id)
+            );
+CREATE TABLE writers (
+                show_id INTEGER NOT NULL,
+                person_id INTEGER NOT NULL,
+                FOREIGN KEY(show_id) REFERENCES shows(id),
+                FOREIGN KEY(person_id) REFERENCES people(id)
+            );
+CREATE TABLE ratings (
+                show_id INTEGER NOT NULL,
+                rating REAL NOT NULL,
+                votes INTEGER NOT NULL,
+                FOREIGN KEY(show_id) REFERENCES shows(id)
+            );
+CREATE TABLE people (
+                id INTEGER,
+                name TEXT NOT NULL,
+                birth NUMERIC,
+                PRIMARY KEY(id)
+            );
+
+
+sqlite> SELECT * FROM shows WHERE title = "Black Mirror";
+id | title | year | episodes
+2085059 | Black Mirror | 2011 | 22
+
+sqlite> SELECT title, year FROM shows WHERE title = "The Office";
+title | year
+The Office | 1995
+The Office | 2001
+The Office | 2005
+The Office | 2010
+The Office | 2012
+The Office | 2019
+
+sqlite> SELECT * FROM shows WHERE year > 2020;
+sqlite> SELECT COUNT(*) FROM shows WHERE year > 2020;
+COUNT(*)
+615
+
+sqlite> SELECT * FROM shows WHERE title LIKE '%Titanic%';
+id | title | year | episodes
+92465 | Tickets for the Titanic | 1987 | 6
+2336103 | Titanic with Len Goodman | 2012 | 2
+2892204 | Titanic 100 Year Anniversary | 1987 | 5
+6954510 | Curious Minds: Titanic | 2015 | 3
+9049924 | The Titanic Channel | 2016 |
+
+SELECT * FROM shows WHERE title = "Stranger Things" AND year = 2016;
+SELECT id FROM shows WHERE title = "Stranger Things" AND year = 2016;
+SELECT * FROM genres WHERE show_id = 4574334;
+SELECT genre FROM genres WHERE show_id = 4574334;
+SELECT genre FROM genres WHERE show_id =
+(SELECT id FROM shows WHERE title = "Stranger Things" AND year = 2016);
+
+SELECT * FROM shows WHERE title = "The Office" ORDER BY episodes DESC;
+SELECT * FROM shows WHERE title = "The Office" ORDER BY episodes DESC LIMIT 1;
+SELECT id FROM shows WHERE title = "The Office" ORDER BY episodes DESC LIMIT 1;
+SELECT * FROM stars WHERE show_id = 386676;
+SELECT person_id FROM stars WHERE show_id = 386676;
+***** use IN vs = to get all from list *****
+SELECT name FROM people WHERE id IN
+(SELECT person_id FROM stars WHERE show_id = 386676);
+
+
+************ Practice ************
+
+1. In what year was Jerry Seinfeld born?
+SELECT birth FROM people WHERE name = "Jerry Seinfeld";
+
+1954
+
+2. How many shows have a perfect 10.0 rating?
+SELECT COUNT(*) FROM ratings WHERE rating = 10.0;
+
+27
+
+3. What genres are associated with The Crown?
+SELECT genre FROM genres WHERE show_id =
+(SELECT id FROM shows WHERE title = "The Crown");
+
+genre
+Drama
+History
+
+4. Who wrote Arrested Development?
+SELECT name FROM people WHERE id =
+(SELECT person_id FROM writers WHERE show_id =
+(SELECT id FROM shows WHERE title = "Arrested Development"));
+
+name
+Mitchell Hurwitz
+
+5. What shows has Allison Janney starred in?
+SELECT title FROM shows WHERE id IN
+(SELECT show_id FROM stars WHERE person_id =
+(SELECT id FROM people WHERE name = "Allison Janney"));
+
+title
+Morton & Hayes
+The West Wing
+The Richard and Judy Show
+The EcoZone Project
+Mr. Sunshine
+Mom
+The Adventures of Mr. Clown
+Break a Hip
+The Late Late Show with James Corden
+I'll Have What Phil's Having
+
+************************************
+
+
+
+

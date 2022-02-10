@@ -1,0 +1,97 @@
+.   current folder
+..  parent folder
+-   previous folder
+
+Bash shell program in terminal window
+~/ $  shell prompt
+/home/ubuntu  for CS50 ide
+
+touch filename  create new file
+mkdir foldername  create new folder
+
+mv source dest          can have multiple source files / can also rename files
+mv foo seminar
+
+rm filename         remove file
+rm -f filename      force remove, no confimation
+rm --help
+man rm              press q to quit
+
+ls / > root_list    output redirection
+cat                 display file
+cat > welcome       records entries / will overwrite
+cat welcome         display contents of welcome or multiple files, can cat to new file
+>>                  redirects and appends
+
+stdin  standard input
+<  input redirection
+cat < welcome   display contents of welcome
+
+cat < welcome > welcome1
+
+cp source destination       copy file
+cp welcome welcome2
+
+man -s 1 -k remove      search section 1 man pages for keyword
+
+Pipe                    output of first command goes into second command
+cat welcome | wc -l     # of lines in file welcome
+
+wget https://           download file
+
+less filename           display 1 screen at a time
+                        j scroll down 1 line
+                        k scroll up 1 line
+                        space jump to next page
+                        b back
+                        g top of the file
+                        shift g bottom of the file
+                        /   search
+                        n next match
+                        shift N previous match
+                        -i Ignore case in searches
+                        -i toggle back to case insensitve
+                        q to quit
+
+ctrl D  end of user input
+
+wc -l shows.csv
+head shows.csv  (first 10 lines default)
+-n number of lines
+
+tail shows.csv (last 10 lines)
+-n number of lines
+
+cut -d , -f 1 shows.csv  -d delimiter -f field #  select first field delimited by commas
+cut -d , -f 2 shows.csv  second columns only
+
+sort filename   writes to stdout
+                redirect > to new file to save
+                -n numeric
+                -r reverse
+
+grep search in file
+grep 'Friends' shows.csv
+    -i ignore case
+    'use quotes for multiple words'
+    regular expressions: grep '^28' shows.csv
+sed 's/Seinfled/Seinfeld/' shows.csv  **beginning and ending /
+sed -i 's/Seinfled/Seinfeld/' shows.csv  fix in place
+
+alias igrep = 'grep -i'   only for session
+
+find /usr -name 'cs50.py'
+    /usr/local/lib/python3.9/site-packages/cs50/cs50.py
+
+find /usr -name 'cs50*'  -name: option
+
+Activity 1:
+wget https://cdn.cs50.net/2021/x/seminars/linux/shows.csv
+cp ../shows.csv .   or ./
+
+grep "Mr. Robot" shows.csv | cut -d , -f 3
+    2015
+
+find /usr -name 'libcs50.a'
+    /usr/lib/libcs50.a
+
